@@ -55,3 +55,17 @@ export async function isUserTripOwner(tripId: string, userId: string): Promise<b
   const result = await db.select().from(tripMembers).where(and(eq(tripMembers.tripId, tripId), eq(tripMembers.userId, userId), eq(tripMembers.role, "owner"))).limit(1);
   return result.length > 0;
 }
+
+export async function updateTripDates(
+  tripId: string,
+  startDate: string,
+  endDate: string,
+  destinations: string[]
+) {
+  const [updated] = await db
+    .update(trips)
+    .set({ startDate, endDate, destinations })
+    .where(eq(trips.id, tripId))
+    .returning();
+  return updated;
+}
