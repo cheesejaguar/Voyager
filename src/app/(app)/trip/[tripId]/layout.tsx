@@ -34,9 +34,9 @@ export default async function TripLayout({
   const currentPhase = computePhase({ flights }, new Date());
 
   return (
-    <div className="flex gap-0 -mx-6 -my-8 h-screen">
+    <div className="flex flex-col md:flex-row gap-0 -mx-4 md:-mx-6 -my-6 md:-my-8 min-h-screen md:h-screen">
       <PhaseRail tripId={tripId} currentPhase={currentPhase} />
-      <div className="flex-1 overflow-y-auto px-6 py-8">{children}</div>
+      <div className="flex-1 overflow-y-auto px-4 md:px-6 py-6 md:py-8">{children}</div>
     </div>
   );
 }
