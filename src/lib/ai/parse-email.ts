@@ -1,4 +1,4 @@
-import { generateObject, streamText, Output } from "ai";
+import { generateText, streamText, Output } from "ai";
 import { gateway } from "ai";
 import { models } from "./model-router";
 import {
@@ -7,12 +7,12 @@ import {
 } from "./schemas";
 
 export async function classifyEmail(emailText: string): Promise<EmailClassification> {
-  const { object } = await generateObject({
+  const { output } = await generateText({
     model: gateway(models.classify),
-    schema: emailClassificationSchema,
+    output: Output.object({ schema: emailClassificationSchema }),
     prompt: `Classify the following email. Determine if it is a flight booking confirmation, hotel booking confirmation, activity/event booking, or unknown/unrelated content. Return the type and your confidence level.\n\nEmail:\n${emailText}`,
   });
-  return object;
+  return output!;
 }
 
 export async function extractFlightDetails(emailText: string) {
