@@ -10,8 +10,8 @@ interface TripCardProps {
   destinations: string[] | null;
   startDate: string | null;
   endDate: string | null;
-  status: string;
-  memberRole: string;
+  status: string | null;
+  memberRole: string | null;
 }
 
 export function TripCard({ id, title, destinations, startDate, endDate, status, memberRole }: TripCardProps) {
@@ -41,7 +41,7 @@ export function TripCard({ id, title, destinations, startDate, endDate, status, 
                 Shared
               </Badge>
             )}
-            <Badge variant={status === "active" ? "accent" : "default"}>{status}</Badge>
+            <Badge variant={status === "active" ? "accent" : "default"}>{status ?? "planning"}</Badge>
           </div>
         </div>
       </Card>
