@@ -5,7 +5,7 @@ import { Image as ImageIcon } from "lucide-react";
 interface Photo {
   id: string;
   blobUrl: string;
-  filename: string;
+  filename: string | null;
   associatedDate: string | null;
 }
 
@@ -29,7 +29,7 @@ export function PhotoGrid({ photos }: PhotoGridProps) {
         <div key={photo.id} className="aspect-square rounded-lg overflow-hidden bg-surface border border-border">
           <img
             src={photo.blobUrl}
-            alt={photo.filename}
+            alt={photo.filename ?? ""}
             className="w-full h-full object-cover"
           />
         </div>
