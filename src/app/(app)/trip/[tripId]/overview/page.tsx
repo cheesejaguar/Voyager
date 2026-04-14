@@ -1,12 +1,14 @@
 import { auth } from "@clerk/nextjs/server";
 import { redirect, notFound } from "next/navigation";
 import { getUserByClerkId } from "@/lib/db/queries/users";
-import { getTripById, getTripWithFlights } from "@/lib/db/queries/trips";
+import { getTripById, getTripWithFlights, isUserTripOwner } from "@/lib/db/queries/trips";
+import { getTripMembers } from "@/lib/db/queries/trip-members";
 import { Card, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { MapPin, Plane, Building2 } from "lucide-react";
 import { format } from "date-fns";
 import { EmailPastePanel } from "@/components/trip/email-paste-panel";
+import { MemberList } from "@/components/trip/member-list";
 
 export default async function TripOverviewPage({
   params,
@@ -26,6 +28,20 @@ export default async function TripOverviewPage({
   const tripData = await getTripWithFlights(tripId);
   const flights = tripData?.flights ?? [];
   const hotels = tripData?.hotels ?? [];
+
+  const [membersData, ownerCheck] = await Promise.all([
+    getTripMembers(tripId),
+    isUserTripOwner(tripId, user.id),
+  ]);
+
+  const members = membersData.map((m) => ({
+    memberId: m.member.id,
+    userId: m.member.userId,
+    email: m.user.email,
+    name: m.user.name,
+    role: m.member.role ?? "member",
+    joinedAt: m.member.joinedAt,
+  }));
 
   return (
     <div>
@@ -92,6 +108,10 @@ export default async function TripOverviewPage({
 
       <div className="mt-8">
         <EmailPastePanel tripId={tripId} />
+      </div>
+
+      <div className="mt-8">
+        <MemberList tripId={tripId} members={members} isOwner={ownerCheck} />
       </div>
     </div>
   );
