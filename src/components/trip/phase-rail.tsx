@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutGrid, Luggage, PlaneTakeoff, CalendarDays, PlaneLanding, Camera } from "lucide-react";
+import { LayoutGrid, Luggage, PlaneTakeoff, CalendarDays, PlaneLanding, Camera, Sparkles, Map } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { TripPhase } from "@/types/trip";
 
@@ -16,6 +16,8 @@ const phases = [
   { key: "pre_trip", label: "Pre-Trip", icon: Luggage, path: "pre-trip" },
   { key: "outbound_flight", label: "Outbound", icon: PlaneTakeoff, path: "flight/outbound" },
   { key: "trip", label: "Trip", icon: CalendarDays, path: "itinerary" },
+  { key: "recommendations", label: "Discover", icon: Sparkles, path: "recommendations" },
+  { key: "map", label: "Map", icon: Map, path: "map" },
   { key: "return_flight", label: "Return", icon: PlaneLanding, path: "flight/return" },
   { key: "post_trip", label: "Post-Trip", icon: Camera, path: "photos" },
 ] as const;
