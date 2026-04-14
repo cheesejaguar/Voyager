@@ -2,6 +2,7 @@ import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { getUserByClerkId } from "@/lib/db/queries/users";
 import { Card, CardTitle, CardContent } from "@/components/ui/card";
+import { UpgradeBanner } from "@/components/trip/upgrade-banner";
 
 export default async function SettingsPage() {
   const { userId: clerkId } = await auth();
@@ -27,6 +28,12 @@ export default async function SettingsPage() {
           </div>
         </CardContent>
       </Card>
+
+      {user.subscriptionTier !== "premium" && (
+        <div className="mt-6">
+          <UpgradeBanner />
+        </div>
+      )}
     </div>
   );
 }
