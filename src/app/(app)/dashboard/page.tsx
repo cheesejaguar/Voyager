@@ -1,16 +1,12 @@
-import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
-import { getUserByClerkId } from "@/lib/db/queries/users";
+import { requireUser } from "@/lib/auth";
 import { getTripsForUser } from "@/lib/db/queries/trips";
 import { TripCard } from "@/components/trip/trip-card";
 import { DashboardActions } from "./dashboard-actions";
 import { FadeIn, StaggerChildren, StaggerItem } from "@/components/ui/motion";
 
 export default async function DashboardPage() {
-  const { userId: clerkId } = await auth();
-  if (!clerkId) redirect("/sign-in");
-
-  const user = await getUserByClerkId(clerkId);
+  const user = await requireUser();
   if (!user) redirect("/sign-in");
 
   const trips = await getTripsForUser(user.id);

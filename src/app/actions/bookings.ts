@@ -33,7 +33,8 @@ export async function confirmFlightBooking(
 
   const connectionGroup = `flight-${importDoc.id}`;
   await createFlightSegments(tripId, importDoc.id, extraction.segments.map((s, i) => ({
-    airline: extraction.airline, flightNumber: extraction.flightNumber,
+    airline: s.airline ?? extraction.airline,
+    flightNumber: s.flightNumber ?? extraction.flightNumber,
     confirmationCode: extraction.confirmationCode, passengerNames: extraction.passengerNames,
     departureAirport: s.departureAirport, arrivalAirport: s.arrivalAirport,
     departureTime: s.departureTime, arrivalTime: s.arrivalTime,

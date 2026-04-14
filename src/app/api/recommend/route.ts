@@ -22,7 +22,14 @@ export async function POST(req: Request) {
   if (!trip) return Response.json({ error: "Trip not found" }, { status: 404 });
 
   const preferences = { ...defaultPreferences, ...(trip.preferenceOverrides as Partial<TravelPreferences> ?? {}) };
-  const destination = trip.destinations?.[0] ?? "the destination";
+
+  // Prefer hotel name/address as destination context (more accurate than airport codes).
+  // Fall back to trip destinations (airport codes) if no hotel.
+  const { getTripWithFlights } = await import("@/lib/db/queries/trips");
+  const tripData = await getTripWithFlights(tripId);
+  const hotels = tripData?.hotels ?? [];
+  const hotelCity = hotels[0]?.address ?? hotels[0]?.hotelName;
+  const destination = hotelCity ?? trip.destinations?.join(", ") ?? "the destination";
 
   // Get existing itinerary for context
   const existingItems = await getItineraryForDay(tripId, date);

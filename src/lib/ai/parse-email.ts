@@ -19,7 +19,7 @@ export async function extractFlightDetails(emailText: string) {
   return streamText({
     model: gateway(models.extract),
     output: Output.object({ schema: flightExtractionSchema }),
-    prompt: `Extract all flight booking details from this confirmation email. Be thorough — extract every segment if there are connections. Use ISO 8601 format with timezone for all dates/times. Use IATA airport codes.\n\nEmail:\n${emailText}`,
+    prompt: `Extract all flight booking details from this confirmation email. Be thorough — extract every segment if there are connections. Each segment may have a DIFFERENT flight number and airline — extract the specific flight number for each segment, not just the first one. Use ISO 8601 format with timezone for all dates/times. Use IATA airport codes.\n\nEmail:\n${emailText}`,
   });
 }
 

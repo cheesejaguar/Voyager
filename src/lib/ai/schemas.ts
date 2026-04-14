@@ -7,6 +7,8 @@ export const emailClassificationSchema = z.object({
 export type EmailClassification = z.infer<typeof emailClassificationSchema>;
 
 export const flightSegmentSchema = z.object({
+  airline: z.string().optional().describe("Airline name for this segment if different from the main airline"),
+  flightNumber: z.string().optional().describe("Flight number for this specific segment (e.g., UA 456)"),
   departureAirport: z.string().describe("IATA airport code for departure (e.g., SFO, JFK)"),
   arrivalAirport: z.string().describe("IATA airport code for arrival (e.g., LAX, LHR)"),
   departureTime: z.string().describe("Departure date/time in ISO 8601 format with timezone"),

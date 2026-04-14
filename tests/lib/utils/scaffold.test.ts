@@ -71,10 +71,23 @@ describe("computeDestinations", () => {
     expect(computeDestinations(flights, "SFO")).toEqual(["FCO"]);
   });
 
-  it("handles multi-city trips", () => {
+  it("handles multi-city trips (identifies final destination)", () => {
+    // Without time data, intermediate cities that look like connections
+    // are excluded. The final outbound arrival is always identified.
     const flights = [
       { departureAirport: "SFO", arrivalAirport: "FCO" },
       { departureAirport: "FCO", arrivalAirport: "CDG" },
+      { departureAirport: "CDG", arrivalAirport: "SFO" },
+    ];
+    expect(computeDestinations(flights, "SFO")).toEqual(["CDG"]);
+  });
+
+  it("handles multi-city with ground travel (different airports)", () => {
+    // When you arrive at one airport and depart from a different one,
+    // both cities are identified as destinations.
+    const flights = [
+      { departureAirport: "SFO", arrivalAirport: "FCO" },
+      { departureAirport: "MXP", arrivalAirport: "CDG" },
       { departureAirport: "CDG", arrivalAirport: "SFO" },
     ];
     expect(computeDestinations(flights, "SFO")).toEqual(["FCO", "CDG"]);
@@ -82,5 +95,26 @@ describe("computeDestinations", () => {
 
   it("returns empty for no flights", () => {
     expect(computeDestinations([], "SFO")).toEqual([]);
+  });
+
+  it("excludes layover airports from destinations", () => {
+    // SFO -> SEA (layover) -> CDG (destination), CDG -> SEA (layover) -> SFO
+    const flights = [
+      { departureAirport: "SFO", arrivalAirport: "SEA" },
+      { departureAirport: "SEA", arrivalAirport: "CDG" },
+      { departureAirport: "CDG", arrivalAirport: "SEA" },
+      { departureAirport: "SEA", arrivalAirport: "SFO" },
+    ];
+    expect(computeDestinations(flights, "SFO")).toEqual(["CDG"]);
+  });
+
+  it("handles single connection with layover", () => {
+    // SJC -> SEA (layover) -> CDG, CDG -> SFO
+    const flights = [
+      { departureAirport: "SJC", arrivalAirport: "SEA" },
+      { departureAirport: "SEA", arrivalAirport: "CDG" },
+      { departureAirport: "CDG", arrivalAirport: "SJC" },
+    ];
+    expect(computeDestinations(flights, "SJC")).toEqual(["CDG"]);
   });
 });
