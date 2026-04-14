@@ -3,7 +3,7 @@ import { redirect, notFound } from "next/navigation";
 import { getUserByClerkId } from "@/lib/db/queries/users";
 import { getTripById } from "@/lib/db/queries/trips";
 import { getItineraryForTrip } from "@/lib/db/queries/itinerary";
-import { AgendaView } from "@/components/calendar/agenda-view";
+import { ItineraryView } from "@/components/calendar/itinerary-view";
 import { PreferencePanel } from "@/components/trip/preference-panel";
 import type { TravelPreferences } from "@/types/preferences";
 
@@ -22,7 +22,7 @@ export default async function ItineraryPage({ params }: { params: Promise<{ trip
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-semibold tracking-tight">Itinerary</h1>
-      <AgendaView
+      <ItineraryView
         tripId={tripId}
         items={items}
         startDate={trip.startDate}
