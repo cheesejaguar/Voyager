@@ -6,6 +6,7 @@ import { Card, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { MapPin, Plane, Building2 } from "lucide-react";
 import { format } from "date-fns";
+import { EmailPastePanel } from "@/components/trip/email-paste-panel";
 
 export default async function TripOverviewPage({
   params,
@@ -87,6 +88,10 @@ export default async function TripOverviewPage({
             )}
           </CardContent>
         </Card>
+      </div>
+
+      <div className="mt-8">
+        <EmailPastePanel tripId={tripId} />
       </div>
     </div>
   );
