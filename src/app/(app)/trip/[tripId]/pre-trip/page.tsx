@@ -11,6 +11,7 @@ import { Card, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Plane, Building2 } from "lucide-react";
 import { format } from "date-fns";
+import { FadeIn } from "@/components/ui/motion";
 
 export default async function PreTripPage({
   params,
@@ -41,21 +42,27 @@ export default async function PreTripPage({
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-semibold tracking-tight">Pre-Trip</h1>
+      <FadeIn>
+        <h1 className="text-2xl font-semibold tracking-tight">Pre-Trip</h1>
+      </FadeIn>
 
       {/* Countdown */}
       {trip.startDate && (
-        <Countdown
-          departureDate={trip.startDate}
-          departureAirport={firstDeparture?.departureAirport ?? undefined}
-        />
+        <FadeIn delay={0.1}>
+          <Countdown
+            departureDate={trip.startDate}
+            departureAirport={firstDeparture?.departureAirport ?? undefined}
+          />
+        </FadeIn>
       )}
 
       {/* Packing + Tasks Grid */}
-      <div className="grid gap-6 md:grid-cols-2">
-        <PackingList tripId={tripId} items={packingItems} />
-        <Checklist tripId={tripId} tasks={preTripTasks} />
-      </div>
+      <FadeIn delay={0.2}>
+        <div className="grid gap-6 md:grid-cols-2">
+          <PackingList tripId={tripId} items={packingItems} />
+          <Checklist tripId={tripId} tasks={preTripTasks} />
+        </div>
+      </FadeIn>
 
       {/* Reservation Summary */}
       <div>

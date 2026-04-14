@@ -4,6 +4,7 @@ import { getUserByClerkId } from "@/lib/db/queries/users";
 import { getTripById, getTripWithFlights } from "@/lib/db/queries/trips";
 import { getRecommendationsForTrip } from "@/lib/db/queries/recommendations";
 import { RecommendationList } from "@/components/recommendations/recommendation-list";
+import { FadeIn } from "@/components/ui/motion";
 
 export default async function RecommendationsPage({
   params,
@@ -27,7 +28,9 @@ export default async function RecommendationsPage({
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-semibold tracking-tight">Recommendations</h1>
+      <FadeIn>
+        <h1 className="text-2xl font-semibold tracking-tight">Recommendations</h1>
+      </FadeIn>
       <RecommendationList
         tripId={tripId}
         recommendations={recommendations}
