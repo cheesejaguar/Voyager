@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { differenceInDays, differenceInHours } from "date-fns";
+import { differenceInDays, differenceInHours, format } from "date-fns";
 
 interface CountdownProps {
   departureDate: string;
@@ -17,7 +17,9 @@ export function Countdown({ departureDate, departureAirport }: CountdownProps) {
     return () => clearInterval(interval);
   }, []);
 
+  // Handle both ISO timestamps ("2025-06-01T10:00:00Z") and date-only strings ("2025-06-01")
   const departure = new Date(departureDate);
+  const hasTime = departureDate.includes("T");
   const days = differenceInDays(departure, now);
   const hours = differenceInHours(departure, now) % 24;
   const isPast = departure < now;
@@ -41,7 +43,11 @@ export function Countdown({ departureDate, departureAirport }: CountdownProps) {
                 <span className="ml-1 text-sm text-text-secondary">hours</span>
               </div>
             </div>
-            <p className="mt-2 text-sm text-text-muted">until departure{departureAirport ? ` from ${departureAirport}` : ""}</p>
+            <p className="mt-2 text-sm text-text-muted">
+              until departure
+              {hasTime && ` at ${format(departure, "h:mm a")}`}
+              {departureAirport ? ` from ${departureAirport}` : ""}
+            </p>
           </div>
         )}
       </CardContent>

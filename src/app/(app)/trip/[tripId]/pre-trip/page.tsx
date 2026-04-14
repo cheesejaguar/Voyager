@@ -43,10 +43,10 @@ export default async function PreTripPage({
       </FadeIn>
 
       {/* Countdown */}
-      {trip.startDate && (
+      {(firstDeparture?.departureTime || trip.startDate) && (
         <FadeIn delay={0.1}>
           <Countdown
-            departureDate={trip.startDate}
+            departureDate={firstDeparture?.departureTime?.toISOString() ?? trip.startDate!}
             departureAirport={firstDeparture?.departureAirport ?? undefined}
           />
         </FadeIn>

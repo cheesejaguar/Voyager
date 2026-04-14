@@ -89,11 +89,17 @@ export function TripMap({
 
     mapboxgl.accessToken = token;
 
+    // Center on hotel if available, otherwise world view
+    const initialCenter: [number, number] = hotelMarkers.length > 0
+      ? [hotelMarkers[0].lng, hotelMarkers[0].lat]
+      : [0, 20];
+    const initialZoom = hotelMarkers.length > 0 ? 13 : 2;
+
     const map = new mapboxgl.Map({
       container: containerRef.current,
       style: "mapbox://styles/mapbox/dark-v11",
-      center: [0, 20],
-      zoom: 2,
+      center: initialCenter,
+      zoom: initialZoom,
       attributionControl: false,
     });
 
