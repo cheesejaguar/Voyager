@@ -1,14 +1,10 @@
-import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
-import { getUserByClerkId } from "@/lib/db/queries/users";
+import { requireUser } from "@/lib/auth";
 import { Card, CardTitle, CardContent } from "@/components/ui/card";
 import { UpgradeBanner } from "@/components/trip/upgrade-banner";
 
 export default async function SettingsPage() {
-  const { userId: clerkId } = await auth();
-  if (!clerkId) redirect("/sign-in");
-
-  const user = await getUserByClerkId(clerkId);
+  const user = await requireUser();
   if (!user) redirect("/sign-in");
 
   return (

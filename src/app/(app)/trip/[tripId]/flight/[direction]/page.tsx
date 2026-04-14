@@ -1,6 +1,5 @@
-import { auth } from "@clerk/nextjs/server";
 import { redirect, notFound } from "next/navigation";
-import { getUserByClerkId } from "@/lib/db/queries/users";
+import { requireUser } from "@/lib/auth";
 import { getTripById, getTripWithFlights } from "@/lib/db/queries/trips";
 import { FlightCard } from "@/components/trip/flight-card";
 import { SegmentTimeline } from "@/components/trip/segment-timeline";
@@ -14,10 +13,7 @@ export default async function FlightPage({
   params: Promise<{ tripId: string; direction: string }>;
 }) {
   const { tripId, direction } = await params;
-  const { userId: clerkId } = await auth();
-  if (!clerkId) redirect("/sign-in");
-
-  const user = await getUserByClerkId(clerkId);
+  const user = await requireUser();
   if (!user) redirect("/sign-in");
 
   const trip = await getTripById(tripId, user.id);
